@@ -1,0 +1,21 @@
+<volt-content-card
+  [title]="'Service Task Break Down'"
+  [subtitle]="'Click slice to view break down'"
+>
+  <ng-template voltTemplate="headerRight">
+    <header class="self-start">
+      <span class="p-tag rounded-full">{{ dateRangeLabel }}</span>
+    </header>
+  </ng-template>
+  <ng-template voltTemplate="content">
+    <volt-loading-container [loading]="responseStatus" [error]="responseError">
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [options]="chartOptions"
+        [oneToOne]="true"
+        [runOutsideAngular]="true"
+        [(update)]="chartUpdate"
+      ></highcharts-chart>
+    </volt-loading-container>
+  </ng-template>
+</volt-content-card>

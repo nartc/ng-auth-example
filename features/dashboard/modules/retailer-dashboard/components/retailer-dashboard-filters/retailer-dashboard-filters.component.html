@@ -1,0 +1,70 @@
+<ng-container *ngIf="form">
+  <section class="flex items-center justify-between">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <section class="flex items-center flex-grow">
+        <volt-single-select
+          voltSbuSelectItems
+          labelKey="name"
+          [defaultLabel]="('' | translate: 'select') + ' SBU'"
+          [defaultValue]="null"
+          [control]="controls.sbu"
+          controlId="sbu"
+        ></volt-single-select>
+        <volt-single-select
+          class="ml-1"
+          voltDepartmentGroupSelectItems
+          [voltCascade]="controls.sbu"
+          [cascadeFromValueKey]="departmentGroupsCascadeFromKey"
+          labelKey="name"
+          [defaultLabel]="
+            ('Select' | translate: 'select') +
+            ' ' +
+            ('Department' | translate: 'department') +
+            ' ' +
+            ('Group' | translate: 'group')
+          "
+          [defaultValue]="null"
+          [control]="controls.departmentGroup"
+          controlId="departmentGroup"
+        ></volt-single-select>
+        <volt-single-select
+          class="ml-1"
+          voltDepartmentSelectItems
+          [voltCascade]="controls.departmentGroup"
+          [cascadeFromValueKey]="departmentCascadeFromKey"
+          [defaultLabel]="
+            ('Select' | translate: 'select') +
+            ' ' +
+            ('Department' | translate: 'department')
+          "
+          [defaultValue]="null"
+          [control]="controls.department"
+          controlId="department"
+        ></volt-single-select>
+        <p-button
+          type="submit"
+          class="ml-1"
+          [label]="'Go'"
+          [disabled]="form.invalid"
+        ></p-button>
+        <p-button
+          type="button"
+          class="ml-1"
+          styleClass="p-button-danger"
+          [label]="'Clear' | translate: 'clearAll'"
+          [disabled]="form.invalid"
+          (onClick)="onClear()"
+        ></p-button>
+      </section>
+    </form>
+    <section class="flex items-center">
+      <volt-single-select-button
+        voltDateRangeSelectItems
+        labelKey="label"
+        defaultRange="future"
+        [control]="dateRangeControl"
+        controlId="dateRange"
+      ></volt-single-select-button>
+    </section>
+  </section>
+</ng-container>

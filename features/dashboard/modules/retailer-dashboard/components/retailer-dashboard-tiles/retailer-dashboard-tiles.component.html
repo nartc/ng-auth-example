@@ -1,0 +1,24 @@
+<volt-dashboard-tile
+  [title]="'Reps In Store Now' | translate: 'repsInStoreNow'"
+  [currentValue]="repsInStore.data"
+  [loading]="repsInStore.status"
+  [error]="repsInStore.error"
+  border="success"
+>
+  <footer>
+    <p-button
+      [label]="'Now' | translate: 'now'"
+      type="button"
+      styleClass="text-xs"
+      (onClick)="onNow()"
+    ></p-button>
+  </footer>
+</volt-dashboard-tile>
+<volt-dashboard-tile
+  [title]="'Scheduled Tasks'"
+  [currentValue]="scheduledTasks.data"
+  [loading]="scheduledTasks.status"
+  [error]="scheduledTasks.error"
+>
+  <span class="p-tag rounded-full ml-2">{{ dateRangeLabel }}</span>
+</volt-dashboard-tile>

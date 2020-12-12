@@ -1,0 +1,35 @@
+<div class="container mx-auto mt-20 lg:w-1/3 shadow-2xl">
+  <volt-content-card [whiteBackground]="true">
+    <ng-template voltTemplate="header">
+      <img
+        class="h-12 mx-auto"
+        src="/assets/img/logos/wmv-dark-full.png"
+        alt="Retailer Logo"
+      />
+    </ng-template>
+    <ng-template voltTemplate="content">
+      <section class="flex flex-col space-y-4">
+        <div class="flex justify-center items-center space-x-2">
+          <fa-icon [icon]="['fas', 'exclamation-triangle']" class="text-2xl"></fa-icon>
+          <h3>Not Authorized</h3>
+        </div>
+        <p>
+          You are not authorized to access the section requested. If you feel
+          you have received this message in error, please contact support
+        </p>
+        <p-button
+          type="button"
+          label="Go to Home"
+          styleClass="w-full"
+          (onClick)="goHome()"
+        ></p-button>
+        <p-button
+          type="button"
+          label="Go Back to Previous Location"
+          styleClass="w-full"
+          (onClick)="goBack()"
+        ></p-button>
+      </section>
+    </ng-template>
+  </volt-content-card>
+</div>

@@ -1,0 +1,33 @@
+<ng-container *rxLet="taskDetailVm$; let vm">
+  <volt-content-card [title]="vm.title">
+    <ng-template voltTemplate="headerRight">
+      <section>
+        <div *ngIf="vm.serviceTaskResult">
+          <fa-icon [icon]="['fas', 'check']"></fa-icon>
+          <h4>{{ 'Completed' | translate: 'completed' }}</h4>
+        </div>
+        <fa-icon
+          [icon]="['fas', 'times']"
+          class="cursor-pointer"
+          (click)="onClose()"
+        ></fa-icon>
+      </section>
+    </ng-template>
+    <ng-template voltTemplate="content">
+      <div class="min-h-dialog-content">
+        <volt-loading-container [loading]="vm.status" [error]="vm.error">
+          <ng-container *ngIf="vm.serviceTask; else retailtainmentTask">
+            <volt-service-task-detail
+              [isCashRecyclingHigh]="
+                vm.scheduleImportant === scheduleImportant.CashRecyclingHigh
+              "
+              [serviceTask]="vm.serviceTask"
+              [showPercentComplete]="true"
+            ></volt-service-task-detail>
+          </ng-container>
+          <ng-template #retailtainmentTask></ng-template>
+        </volt-loading-container>
+      </div>
+    </ng-template>
+  </volt-content-card>
+</ng-container>

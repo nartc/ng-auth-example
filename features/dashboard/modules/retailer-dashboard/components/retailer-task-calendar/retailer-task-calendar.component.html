@@ -1,0 +1,42 @@
+<volt-content-card
+  [title]="'Tasks Calendar'"
+  [subtitle]="('Week' | translate: 'week') + ' ' + walmartWeek"
+>
+  <ng-template voltTemplate="headerRight">
+    <header class="self-start flex">
+      <div class="self-start flex items-center">
+        <p-inputSwitch
+          class="flex"
+          inputId="showAll"
+          [formControl]="showAllControl"
+        ></p-inputSwitch>
+        <label
+          for="showAll"
+          class="ml-2 text-xl text-gray-dark font-bold cursor-pointer"
+        >
+          {{ 'All' | translate: 'all' | uppercase }}
+        </label>
+      </div>
+      <div class="p-inputgroup ml-4">
+        <span class="p-inputgroup-addon">
+          <fa-icon [icon]="['fas', 'search']"></fa-icon>
+        </span>
+        <input
+          type="text"
+          pInputText
+          [formControl]="queryControl"
+          [placeholder]="'Filter' | translate: 'filter'"
+        />
+      </div>
+    </header>
+  </ng-template>
+
+  <ng-template voltTemplate="content">
+    <volt-loading-container
+      [loading]="taskEventsResponse?.status"
+      [error]="taskEventsResponse?.error"
+    >
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </volt-loading-container>
+  </ng-template>
+</volt-content-card>

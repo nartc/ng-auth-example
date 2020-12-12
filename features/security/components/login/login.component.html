@@ -1,0 +1,94 @@
+<div class="container mx-auto mt-20 lg:w-1/3 shadow-2xl">
+  <volt-content-card [whiteBackground]="true">
+    <ng-template voltTemplate="header">
+      <img
+        class="h-12 mx-auto"
+        src="/assets/img/logos/wmv-dark-full.png"
+        alt="Retailer Logo"
+      />
+    </ng-template>
+    <ng-template voltTemplate="content">
+      <section class="flex flex-col space-y-4">
+        <h6>{{ 'Sign In' | translate: 'signIn' }}</h6>
+        <small *ngIf="loginResponse?.status === 'failure'" class="p-invalid">
+          {{ loginResponse?.error }}
+        </small>
+        <form
+          [formGroup]="form"
+          class="flex flex-col space-y-4"
+          (ngSubmit)="submit()"
+        >
+          <label for="emailOrMobile">
+            <input
+              [class.p-invalid]="
+                form.get('emailOrMobile').touched &&
+                !!form.get('emailOrMobile').errors
+              "
+              class="w-full"
+              type="text"
+              pInputText
+              id="emailOrMobile"
+              placeholder="Email or Mobile number"
+              formControlName="emailOrMobile"
+            />
+            <small
+              class="p-invalid"
+              *ngIf="
+                form.get('emailOrMobile').touched &&
+                !!form.get('emailOrMobile').errors
+              "
+            >
+              A valid email or phone number is required.
+            </small>
+          </label>
+          <label for="password">
+            <input
+              [class.p-invalid]="
+                form.get('password').touched && !!form.get('password').errors
+              "
+              class="w-full"
+              type="password"
+              pInputText
+              id="password"
+              [placeholder]="'Password' | translate: 'password'"
+              formControlName="password"
+            />
+            <small
+              class="p-invalid"
+              *ngIf="
+                form.get('password').touched && !!form.get('password').errors
+              "
+            >
+              Password is required
+            </small>
+          </label>
+          <div class="text-right">
+            <a class="link hover:underline text-sm">
+              {{ 'I forgot my password' | translate: 'forgotMyPassword' }}
+            </a>
+          </div>
+          <p-button
+            type="submit"
+            [disabled]="form.invalid || loginResponse?.status === 'loading'"
+            [label]="
+              loginResponse?.status === 'loading'
+                ? ('Signing in' | translate: 'signingIn')
+                : ('Sign In' | translate: 'signIn')
+            "
+            styleClass="w-full"
+          ></p-button>
+          <p-button
+            styleClass="p-button-secondary w-full"
+            type="button"
+            [label]="
+              'Sign In with Walmart'
+                | translate
+                  : 'signInWithWalmart'
+                  : { retailer: appRetailer.retailer }
+            "
+          ></p-button>
+        </form>
+      </section>
+    </ng-template>
+  </volt-content-card>
+</div>

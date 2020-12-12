@@ -1,0 +1,46 @@
+<volt-content-wrapper titleKey="dashboard" title="Dashboard">
+  <ng-container *rxLet="vm$; let vm; suspense: loading">
+    <ng-template voltTemplate="content">
+      <volt-retailer-dashboard-filters
+        class="mb-4"
+      ></volt-retailer-dashboard-filters>
+      <volt-retailer-dashboard-tiles
+        [dateRangeLabel]="vm.dateRange"
+        [repsInStore]="vm.repsInStore"
+        [scheduledTasks]="vm.scheduledTaskCount"
+      ></volt-retailer-dashboard-tiles>
+      <div class="grid grid-cols-3 gap-4">
+        <section class="col-span-2">
+          <volt-retailer-task-calendar
+            class="mb-4"
+            [taskEvents]="vm.taskEvents"
+            [walmartWeek]="vm.walmartWeek"
+            (viewEventDetail)="onViewEventDetail($event)"
+          ></volt-retailer-task-calendar>
+          <volt-retailer-top-supplier-chart
+            [dateRangeLabel]="vm.dateRange"
+            [topSupplier]="vm.topSuppliers"
+          ></volt-retailer-top-supplier-chart>
+        </section>
+        <section>
+          <volt-retailer-service-task-chart
+            class="mb-4"
+            [dateRangeLabel]="vm.dateRange"
+            [responseStatus]="vm.serviceTasksByPsp.status"
+            [responseError]="vm.serviceTasksByPsp.error"
+            [serviceTasksByPsp]="vm.serviceTasksByPsp.data.sortedByTotal"
+          ></volt-retailer-service-task-chart>
+          <volt-retailer-service-task-time-chart
+            [dateRangeLabel]="vm.dateRange"
+            [responseStatus]="vm.serviceTasksByPsp.status"
+            [responseError]="vm.serviceTasksByPsp.error"
+            [serviceTasksByPsp]="vm.serviceTasksByPsp.data.sortedByTime"
+          ></volt-retailer-service-task-time-chart>
+        </section>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <volt-loading-spinner></volt-loading-spinner>
+  </ng-template>
+</volt-content-wrapper>

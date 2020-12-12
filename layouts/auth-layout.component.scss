@@ -1,0 +1,20 @@
+.side-nav,
+.content {
+  height: calc(100vh - theme("maxHeight['top-nav']"));
+}
+
+.side-nav {
+  margin-top: theme("maxHeight['top-nav']");
+  @apply fixed w-side-nav overflow-y-auto overflow-x-hidden;
+}
+
+.content {
+  padding-top: theme("maxHeight['top-nav']");
+  @apply relative ml-0;
+}
+
+@screen lg {
+  .content {
+    margin-left: theme("width['side-nav']");
+  }
+}

@@ -1,0 +1,197 @@
+<div class="grid grid-cols-4">
+  <section class="col-span-4" *ngIf="isCashRecyclingHigh">
+    <p-messages severity="error" styleClass="mb-4">
+      <ng-template pTemplate>
+        <div class="flex flex-col space-y-4">
+          <div class="flex items-center">
+            <volt-description
+              [title]="'Start' | translate: 'start'"
+              [content]="serviceTask.serviceStart | timezone"
+            ></volt-description>
+            <volt-description
+              class="ml-4"
+              [title]="'End' | translate: 'end'"
+              [content]="serviceTask.serviceEnd | timezone"
+            ></volt-description>
+          </div>
+          <span>
+            If the visit is not canceled/rescheduled within 24 hours, a trip
+            charge will be charged to the store. Call this number to
+            cancel/reschedule: 700-WALMART and state “Cash Recycler Scheduling”
+            when prompted.
+          </span>
+        </div>
+      </ng-template>
+    </p-messages>
+  </section>
+  <section class="col-span-3">
+    <volt-description
+      class="mb-2"
+      [title]="'Service Deployment' | translate: 'serviceDeployment'"
+      [content]="serviceTask.serviceDeploymentName"
+    ></volt-description>
+    <volt-description
+      class="mb-2"
+      [title]="'Departments' | translate: 'departments'"
+    >
+      <ng-template voltTemplate="content">
+        <span
+          *ngFor="
+            let dept of serviceTask.departments;
+            last as isLast;
+            first as isFirst
+          "
+          [class.ml-2]="!isFirst"
+        >
+          {{ dept.number }} - {{ dept.name }}
+          <span *ngIf="!isLast">,</span>
+        </span>
+      </ng-template>
+    </volt-description>
+    <volt-description
+      class="mb-2"
+      [title]="'Activity' | translate: 'activity'"
+      [content]="serviceTask.activity"
+    ></volt-description>
+    <volt-description
+      class="mb-2"
+      [title]="'Field Group' | translate: 'fieldGroup'"
+      [content]="serviceTask.accountName"
+    ></volt-description>
+    <volt-description
+      *ngIf="!!serviceTask.accountStoreSupportNumber"
+      class="mb-2"
+      [title]="'Store Support Phone Number'"
+      [content]="serviceTask.accountStoreSupportNumber"
+    ></volt-description>
+    <div class="flex items-center mb-2">
+      <volt-description
+        [title]="'Start' | translate: 'start'"
+        [content]="
+          serviceTask.serviceStart | timezone: 'America/Chicago':'DATETIME_FULL'
+        "
+      ></volt-description>
+      <volt-description
+        class="ml-4"
+        [title]="'End' | translate: 'end'"
+        [content]="
+          serviceTask.serviceEnd | timezone: 'America/Chicago':'DATETIME_FULL'
+        "
+      ></volt-description>
+    </div>
+    <volt-description
+      class="mb-2"
+      [title]="'Task Name'"
+      [content]="serviceTask.name"
+    ></volt-description>
+    <volt-description
+      class="mb-2"
+      [title]="'Service Model' | translate: 'serviceModel'"
+      [content]="serviceTask.serviceModel"
+    ></volt-description>
+    <volt-description
+      class="mb-2"
+      [title]="'Note' | translate: 'note'"
+      [content]="serviceTask.note"
+    ></volt-description>
+    <volt-description
+      class="mb-2"
+      *ngIf="serviceTask.visitOverview"
+      [title]="'Visit Overview' | translate: 'visitOverview'"
+      [content]="serviceTask.visitOverview"
+    ></volt-description>
+    <volt-description
+      class="mb-2"
+      *ngIf="serviceTask.instructionUrls?.length"
+      [title]="'Instructions' | translate: 'instruction_plural'"
+    >
+      <ng-template voltTemplate="content">
+        <ul>
+          <li *ngFor="let instruction of serviceTask.instructionUrls">
+            <a [href]="instruction.url" target="_blank">
+              {{ instruction.name }}
+            </a>
+          </li>
+        </ul>
+      </ng-template>
+    </volt-description>
+    <ng-container *ngIf="serviceTask.suppliers?.length">
+      <volt-description
+        *ngIf="serviceTask.suppliers.length === 1; else moreSuppliers"
+        class="mb-2"
+        [title]="'Suppliers' | translate: 'suppliers'"
+        [content]="serviceTask.suppliers[0]"
+      ></volt-description>
+      <ng-template #moreSuppliers>
+        <volt-description
+          class="mb-2"
+          [title]="'Suppliers' | translate: 'suppliers'"
+        >
+          <ng-template voltTemplate="content">
+            <a
+              class="link hover:underline text-sm"
+              (click)="serviceTask.showSuppliers = !serviceTask.showSuppliers"
+            >
+              {{ serviceTask.suppliers.length }}
+            </a>
+          </ng-template>
+        </volt-description>
+        <ul *ngIf="serviceTask.showSuppliers">
+          <li
+            class="lowercase capitalize"
+            *ngFor="let supplier of serviceTask.suppliers"
+          >
+            {{ supplier }}
+          </li>
+        </ul>
+      </ng-template>
+    </ng-container>
+    <volt-description
+      *ngIf="serviceTask.locationNumbers?.length"
+      class="mb-2"
+      [title]="'Locations' | translate: 'locations'"
+    >
+      <ng-template voltTemplate="content">
+        <span>{{ serviceTask.locationNumbers.length }}</span>
+        <a
+          *permission="['SchedulesManage', 'Read']"
+          (click)="goToServiceTask.emit(serviceTask.serviceDepoymentId)"
+          class="link hover:underline ml-2"
+        >
+          Go to Service Deployments
+        </a>
+      </ng-template>
+    </volt-description>
+    <volt-description
+      class="mb-2"
+      *ngIf="serviceTask.upcs?.length"
+      [title]="'UPCs'"
+    >
+      <ng-template voltTemplate="content">
+        <ul>
+          <li *ngFor="let upc of serviceTask.upcs">
+            <span *ngIf="upc.action">{{ upc.action }}:</span>
+            <span class="lowercase capitalize">
+              {{ upc.upcs.join(',') }}
+            </span>
+          </li>
+        </ul>
+      </ng-template>
+    </volt-description>
+    <!--    TODO(chau): Tags-->
+  </section>
+  <section class="text-center" *ngIf="showPercentComplete">
+    <volt-percent-complete-circle
+      strokeClass="success"
+      [size]="175"
+      [text]="percentComplete + '%'"
+      [percentComplete]="percentComplete"
+    ></volt-percent-complete-circle>
+    <small>Percent of Tasks Completed</small>
+  </section>
+</div>
+<div class="text-right">
+  <small class="font-light text-sm text-gray-dark">
+    Ref#: {{ serviceTask.locationRefNumber }}
+  </small>
+</div>
